@@ -1,5 +1,5 @@
 ## 0 Setup 
-Store the name of the sink, project and dataset in environment variables. The project you specify here, is the project where the dataset will live, with all the aggregated logs.
+Store the name of the sink, project and dataset in environment variables.
 ```bash
    export SINK_NAME=<YOUR_SINK_NAME>
    export PROJECT_ID=<YOU_PROJECT_NAME>
@@ -15,9 +15,9 @@ To make an aggregated sink, you specifify either the --billing-acount, --folder 
 ```bash
     gcloud logging sinks create $SINK_NAME  \
     bigquery.googleapis.com/projects/$PROJECT_ID/datasets/ --include-children \
-    --billing-account=$BILLING_ID --log-filter="resource.type:Build"
+    --billing-account=$BILLING_ID --log-filter="type:Build"
 ```
-Omiting these flags will default to your current project. Since I don't have folder level, organization level or billingID clearence, I will show you the same command, but on a project level. Note the --log-filter, which only select logs created by Cloud Builder.
+Omiting these flags will default to your current setup. Since I don't have folder level clearence, I will show you the same command, but on a project level.
 
 ```bash
     gcloud logging sinks create $SINK_NAME  \
@@ -25,9 +25,9 @@ Omiting these flags will default to your current project. Since I don't have fol
     --log-filter="resource.type:Build"
 ```
 
-## 2 Create a very simple query in BigQuery
+## 2 Create a simple query in BigQuery
 Everything that happens in cloudbuild is now exported to the BigQuery Sink. 
-To only see the status, i.e., start, done or error we add a simple filter.
+To only see the status, i.e., start, done or succes - we need need to filter.
 ```SQL
 SELECT * FROM `<YOUR_TABLE_NAME>`
 WHERE textPayLoad LIKE 'ERROR'
@@ -35,7 +35,29 @@ WHERE textPayLoad LIKE 'ERROR'
    OR textPayLoad Like 'DONE'
 ORDER BY timeStamp DESC 
 ```
-Now you can create a view store to store the query, have it updated periodically, and feed in a simple dashboard
+
+Or slightly more cleaned up ...
+```SQL
+SELECT
+  resource.labels.project_id AS PROJECT,
+  resource.labels.build_id AS BUILD_ID,
+  CASE
+    WHEN textPayLoad LIKE 'ERROR' THEN "FAILED"
+    WHEN textPayLoad LIKE '%starting build%' THEN "STARTED"
+    ELSE "SUCCESS"
+  END AS STATUS,
+  timeStamp 
+FROM
+  `spindocter.cloud_builds.cloudbuild_*`
+WHERE
+  textPayLoad LIKE 'ERROR'
+  OR textPayLoad LIKE '%starting build%'
+  OR textPayLoad LIKE 'DONE'
+ORDER BY BUILD_ID, timeStamp DESC
+```
+
+Now you can save the query and assign it a view (table) which feeds a simple dashboard. In the BigQuery UI, click "save view" and give it a name. 
+Go to datastudio.google.com, and create a report with the table view as source.
 
 ## Some resources
 Resources: 
