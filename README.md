@@ -1,5 +1,5 @@
 ## 0 Setup 
-Store the name of the sink, project and dataset in environment variables.
+Store the name of the sink, project and dataset in environment variables. The project you specify here, is the project where the dataset will live, with all the aggregated logs.
 ```bash
    export SINK_NAME=<YOUR_SINK_NAME>
    export PROJECT_ID=<YOU_PROJECT_NAME>
