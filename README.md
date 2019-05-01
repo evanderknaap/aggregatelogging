@@ -50,7 +50,7 @@ SELECT
   END AS STATUS,
   timeStamp 
 FROM
-  `spindocter.cloud_builds.cloudbuild_*`
+  `<YOUR_TABLE_NAME>`
 WHERE
   textPayLoad LIKE 'ERROR'
   OR textPayLoad LIKE '%starting build%'
