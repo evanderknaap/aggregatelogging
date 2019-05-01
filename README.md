@@ -17,7 +17,7 @@ Add the --include-children, to see logs of all children resources. This means th
 ```bash
     gcloud logging sinks create $SINK_NAME  \
     bigquery.googleapis.com/projects/$PROJECT_ID/datasets/ --include-children \
-    --billing-account=$BILLING_ID --log-filter="type:Build"
+    --billing-account=$BILLING_ID --log-filter="resource.type:Build"
 ```
 If you omit the --billing-account, --folder and --organization flas, the sink will default to the scope of the current project. I don't have folder level clearence, hence I will show you the same command, but on a project level only.
 
