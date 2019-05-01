@@ -9,7 +9,9 @@ Store the name of the sink, project and dataset in environment variables.
 Check if you have "the Logs Configuration Writer" role as individual.
  
 ## 1 Create the sink
-To make an aggregated sink, you specifify either the --billing-acount, --folder or --organization ID. For this Cloud Identity or G-Suite has to be setup. See resources below. Add the --include-children, to see logs of all children resources. These are sub-folders, en all projects contained in this folder.
+To make an aggregated sink, you specifify either the --billing-acount, --folder or --organization flag. For this to work, one has to have an organization. If you don;t have this yet, you can setup Cloud Identity or use your G-Suite domain. See resources below. 
+
+Add the --include-children, to see logs of all children resources. This means that all project in all sub-folders are included in the logs.
 [Creating aggregreated reports](https://cloud.google.com/logging/docs/export/aggregated_exports)
 
 ```bash
@@ -17,7 +19,7 @@ To make an aggregated sink, you specifify either the --billing-acount, --folder 
     bigquery.googleapis.com/projects/$PROJECT_ID/datasets/ --include-children \
     --billing-account=$BILLING_ID --log-filter="type:Build"
 ```
-Omiting these flags will default to your current setup. Since I don't have folder level clearence, I will show you the same command, but on a project level.
+If you omit the --billing-account, --folder and --organization flas, the sink will default to the scope of the current project. I don't have folder level clearence, hence I will show you the same command, but on a project level only.
 
 ```bash
     gcloud logging sinks create $SINK_NAME  \
@@ -26,8 +28,8 @@ Omiting these flags will default to your current setup. Since I don't have folde
 ```
 
 ## 2 Create a simple query in BigQuery
-Everything that happens in cloudbuild is now exported to the BigQuery Sink. 
-To only see the status, i.e., start, done or succes - we need need to filter.
+Everything that happens in Cloud Build is now exported to our new BigQuery Sink. 
+To only see the status, i.e., START, DONE or SUCCES - we simply filter on these statements in the log payload.
 ```SQL
 SELECT * FROM `<YOUR_TABLE_NAME>`
 WHERE textPayLoad LIKE 'ERROR'
@@ -56,8 +58,9 @@ WHERE
 ORDER BY BUILD_ID, timeStamp DESC
 ```
 
-Now you can save the query and assign it a view (table) which feeds a simple dashboard. In the BigQuery UI, click "save view" and give it a name. 
-Go to datastudio.google.com, and create a report with the table view as source.
+Now you can save the query and save view which feeds a simple dashboard. In the BigQuery UI, click "save view" and give it a name. 
+Go to [datastudio.google.com](www.http://datastudio.google.com), and create a report with the table view as source. 
+
 
 ## Some resources
 Resources: 
