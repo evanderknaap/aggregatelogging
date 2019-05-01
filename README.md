@@ -15,9 +15,9 @@ To make an aggregated sink, you specifify either the --billing-acount, --folder 
 ```bash
     gcloud logging sinks create $SINK_NAME  \
     bigquery.googleapis.com/projects/$PROJECT_ID/datasets/ --include-children \
-    --billing-account=$BILLING_ID --log-filter="type:Build"
+    --billing-account=$BILLING_ID --log-filter="resource.type:Build"
 ```
-Omiting these flags will default to your current project. Since I don't have folder level, organization level or billingID clearence, I will show you the same command, but on a project level.
+Omiting these flags will default to your current project. Since I don't have folder level, organization level or billingID clearence, I will show you the same command, but on a project level. Note the --log-filter, which only select logs created by Cloud Builder.
 
 ```bash
     gcloud logging sinks create $SINK_NAME  \
