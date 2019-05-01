@@ -61,8 +61,8 @@ ORDER BY BUILD_ID, timeStamp DESC
 Now you can save the query and save view which feeds a simple dashboard. In the BigQuery UI, click "save view" and give it a name. 
 Go to [datastudio.google.com](www.http://datastudio.google.com), and create a report with the table view as source. 
 
-
 ## Some resources
 Resources: 
 [Creating aggregreated reports](https://cloud.google.com/logging/docs/export/aggregated_exports)
+
 [Setup export sink with gcloud](https://cloud.google.com/sdk/gcloud/reference/beta/logging/sinks/create)
