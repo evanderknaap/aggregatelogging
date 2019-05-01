@@ -1,9 +1,9 @@
 ## 0 Setup 
 Store the name of the sink, project and dataset in environment variables.
 ```bash
-   export SINK_NAME=cloud_builds
-   export PROJECT_ID=validateflow
-   export DATASET_NAME=somename
+   export SINK_NAME=<YOUR_SINK_NAME>
+   export PROJECT_ID=<YOU_PROJECT_NAME>
+   export DATASET_NAME=<YOUR_DATASET_NAME>
 ```
 
 Check if you have "the Logs Configuration Writer" role as individual.
