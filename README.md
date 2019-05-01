@@ -9,10 +9,10 @@ Store the name of the sink, project and dataset in environment variables.
 Check if you have "the Logs Configuration Writer" role as individual.
  
 ## 1 Create the sink
-To make an aggregated sink, you specifify either the --billing-acount, --folder or --organization flag. For this to work, one has to have an organization. If you don;t have this yet, you can setup Cloud Identity or use your G-Suite domain. See resources below. 
+To make an aggregated sink, you specifify either the --billing-acount, --folder or --organization flag. For this to work, one has to have an organization. If you don't have this yet, you can setup Cloud Identity or use your G-Suite domain. See links below.
 
-Add the --include-children, to see logs of all children resources. This means that all project in all sub-folders are included in the logs.
-[Creating aggregreated reports](https://cloud.google.com/logging/docs/export/aggregated_exports)
+Add the --include-children flag to see logs of all children resources. This means that all projects in all sub-folders are included in the logs.
+[Creating aggregated reports](https://cloud.google.com/logging/docs/export/aggregated_exports)
 
 ```bash
     gcloud logging sinks create $SINK_NAME  \
