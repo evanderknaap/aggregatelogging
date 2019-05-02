@@ -61,6 +61,32 @@ ORDER BY BUILD_ID, timeStamp DESC
 Now you can save the query and save view which feeds a simple dashboard. In the BigQuery UI, click "save view" and give it a name. 
 Go to [datastudio.google.com](www.http://datastudio.google.com), and create a report with the table view as source. 
 
+```bash
+steps:
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - | 
+    gcloud deployment-manager deployments create quickstart-deployment2 --config vm.yaml || exit 0
+  id: 'create'
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'deployment-manager',
+    'deployments',
+    'update',
+    'quickstart-deployment2',
+    '--config',
+    'vm.yaml',
+    --verbosity,
+    'critical'
+  ]
+  waitFor: ['create']
+  id: 'update'
+```
+
+
 ## Some resources
 Resources: 
 [Creating aggregreated reports](https://cloud.google.com/logging/docs/export/aggregated_exports)
